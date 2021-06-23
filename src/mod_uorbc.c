@@ -37,7 +37,6 @@ static void orb_init_multi( int i )
 
 	uorbc_platform_log( "orb_init_multi" );
 
-	/* 每个指针指向ORB_MULTI_MAX_INSTANCES个orb_data_t内存 */
 	g_orb_buf[i] = ( p_orb_data_t ) uorbc_platform_malloc( sizeof( orb_data_t ) * ORB_MULTI_MAX_INSTANCES );
 
 	uorbc_platform_assert( g_orb_buf[i] );
@@ -174,8 +173,7 @@ orb_advert_t orb_advertise_multi( const struct orb_metadata* meta, const void* d
 //            orb_unlock(atomic_state);
 			g_orb_buf[orb_id][inst].orb_id = orb_id;
 			//name the advert as the pointer of the orb's internal data
-			advert = ( void* )( &g_orb_buf[orb_id][inst] );
-			//get the current system time in us
+			advert = ( void* )( &g_orb_buf[orb_id][inst] );			
 			g_orb_buf[orb_id][inst].last_updated_time = time( NULL );
 
 			g_orb_buf[orb_id][inst].cur_gen++;
@@ -257,8 +255,6 @@ orb_advert_t orb_advertise_multi_queue( const struct orb_metadata* meta, const v
 			g_orb_buf[orb_id][inst].last_gen = 0;
 			g_orb_buf[orb_id][inst].queue_size = queue_size;
 			uorbc_platform_log( "cur_gen:%d last_gen:%d queue_size:%d", g_orb_buf[orb_id][inst].cur_gen, g_orb_buf[orb_id][inst].last_gen, queue_size );
-
-
 
 			g_orb_buf[orb_id][inst].published = true;
 			task_id = ( int )uorbc_platfrom_get_thread_id();
